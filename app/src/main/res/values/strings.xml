@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CameraApp</string>
+    <string name="hello_world">CameraApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="title_activity_view_image">viewImageActivity</string>
+    <string name="title_activity_list_images">listImagesActivity</string>
+
+</resources>
