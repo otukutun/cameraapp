@@ -87,6 +87,12 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(this,"Image saved\n" , Toast.LENGTH_LONG).show();
 
                 //File file = new File(fileUri.toString());
+                MediaScannerConnection.scanFile(
+                        this,
+                        new String[] {fileUri.getPath()},
+                        new String[]{"image/jpeg"},
+                        null
+                );
 
                 Log.d("MyCameraApp",fileUri.getPath());
                 Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath());

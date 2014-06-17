@@ -1,13 +1,17 @@
 package de.vogella.android.cameraapp.app;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Picture;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
@@ -16,11 +20,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class listImagesActivity extends ActionBarActivity {
+    File[] mediaStorageFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_images);
+
 
         ArrayList<Bitmap> list = load();
         BitmapAdapter adapter = new BitmapAdapter(
@@ -33,21 +39,12 @@ public class listImagesActivity extends ActionBarActivity {
 
     private ArrayList<Bitmap> load() {
         ArrayList<Bitmap> list = new ArrayList<Bitmap>();
-        ContentResolver cr = getContentResolver();
-        Uri uri = MediaStore.Images.Media.getContentUri("pictures/mycameraapp/");
-        //Uri uri = MediaStore.Images.Media.getContentUri("pictures/mycameraapp/");
 
-        //Uri uri = Uri.parse("file:///storage/emulated/0/Pictures/MyCameraApp");
-        Uri uri = Uri.parse("content://pictures/mycameraapp/");
-        //Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-
-        for (int i = 0; i < cursor.getCount(); i++) {
-            long id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
-            Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MICRO_KIND, null);
+        String photoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath() + File.separator + "MyCameraApp";
+        mediaStorageFiles = new File(photoPath).listFiles();
+        for (int i = 0; i < mediaStorageFiles.length; i++) {
+            Bitmap bitmap = BitmapFactory.decodeFile(mediaStorageFiles[i].getPath());
             list.add(bitmap);
-            cursor.moveToNext();
         }
         return list;
     }
